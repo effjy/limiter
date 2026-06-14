@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Network Speed Limiter
+GenericName=Bandwidth Limiter
+Comment=Limit combined upload and download speed on a network interface
+Exec=speed-limit-launcher
+Icon=speed-limit
+Terminal=false
+Categories=Network;System;Utility;
+Keywords=bandwidth;speed;limit;throttle;tc;network;
+StartupWMClass=speed_limit_gui
