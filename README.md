@@ -1,10 +1,14 @@
-# Linux Network Speed Limiter
+<div align="center">
+
+<a href="https://github.com/effjy/limiter/"><img src="titles/network-speed-limiter-title.svg" height="52" alt="Network Speed Limiter"></a>
 
 ![Platform](https://img.shields.io/badge/platform-Linux-blue)
 ![Language](https://img.shields.io/badge/language-C-00599C)
 ![GUI](https://img.shields.io/badge/GUI-GTK3-4A90D9)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Status](https://img.shields.io/badge/status-active-success)
+
+</div>
 
 A tool to limit combined upload and download speeds on a specific network interface (e.g., `wlo1`) with a total bandwidth cap in **KB/s** (kiloBytes per second). Ships in two forms:
 
