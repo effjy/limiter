@@ -503,6 +503,15 @@ static void activate(GtkApplication *app, gpointer user_data) {
 }
 
 int main(int argc, char **argv) {
+    /* This GUI runs as root (via pkexec) on the user's shared X display. GTK
+     * would otherwise auto-start a root-owned at-spi accessibility bus under
+     * /root/.cache/at-spi and stamp its path into the per-display AT_SPI_BUS
+     * X root-window property, which every other (non-root) client then fails
+     * to connect to ("Permission denied"). We need no accessibility bridge,
+     * so disable it before GTK initialises and leave the shared state alone. */
+    g_setenv("NO_AT_BRIDGE", "1", TRUE);
+    g_setenv("GTK_A11Y", "none", TRUE);
+
     GtkApplication *app = gtk_application_new(APP_ID, G_APPLICATION_DEFAULT_FLAGS);
     g_signal_connect(app, "activate", G_CALLBACK(activate), NULL);
     int status = g_application_run(G_APPLICATION(app), argc, argv);
