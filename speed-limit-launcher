@@ -1,0 +1,22 @@
+#!/bin/sh
+# Launch the GUI as root while preserving access to the user's X display.
+# pkexec strips the environment, so DISPLAY/XAUTHORITY are passed explicitly
+# via `env` (as arguments, which pkexec does not strip).
+#
+# NO_AT_BRIDGE / GTK_A11Y are passed here too (not only g_setenv'd inside the C
+# program) so the accessibility bridge is disabled from the very start of the
+# root process. Otherwise GTK, running as root, spins up a root-owned at-spi bus
+# under /root/.cache/at-spi and stamps its path into the shared AT_SPI_BUS X
+# root-window property -- after which every non-root GTK client (caja, zentimer,
+# ...) fails with "Couldn't connect to accessibility bus: Permission denied".
+
+XAUTH="${XAUTHORITY:-$HOME/.Xauthority}"
+
+# Allow the root user to connect to this X session (X11 only; harmless if absent).
+if [ -n "$DISPLAY" ] && command -v xhost >/dev/null 2>&1; then
+    xhost +SI:localuser:root >/dev/null 2>&1 || true
+fi
+
+exec pkexec env DISPLAY="$DISPLAY" XAUTHORITY="$XAUTH" \
+    NO_AT_BRIDGE=1 GTK_A11Y=none \
+    speed_limit_gui "$@"
